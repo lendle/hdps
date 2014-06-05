@@ -5,20 +5,26 @@
 \alias{hdps-package}
 \title{High-dimensional propensity score algorithm}
 \description{
-The high-dimensional propensity score algorithm is a method for
+The high-dimensional propensity score (HDPS) algorithm is a method for
 high-dimensional proxy adjustment in claims data. This package implements
-the variable transformation and varaible selection parts of the whole
+the variable transformation and variable selection parts of the
 algorithm.
 }
 \details{
 \tabular{ll}{
 Package: \tab hdps\cr
 Type: \tab Package\cr
-Version: \tab 0.0\cr
+Version: \tab 0.1\cr
 Date: \tab 2014-06-05\cr
 License: \tab MIT \cr
-} ~~ An overview of
-how to use the package, including the most important functions ~~
+}
+
+This package implements part of step 2 (\code{\link{identify_covariates}}),
+steps 3 (\code{\link{assess_recurrence}}) and 4 (\code{\link{prioritize_covariates}})
+of the HDPS algorithm (Schneeweiss et al., 2009).
+
+The \code{link{hdps_screen}} function is a wrapper function for \code{\link{identify_covariates}},
+\code{\link{assess_recurrence}},  and \code{\link{prioritize_covariates}}.
 }
 \examples{
 #~~ simple examples of the most important functions ~~
@@ -31,8 +37,8 @@ Maintainer: Sam Lendle <sam.lendle@gmail.com>
 \references{
 Schneeweiss, S., Rassen, J. A., Glynn, R. J., Avorn, J., Mogun,
 H., & Brookhart, M. A. (2009). High-dimensional propensity score adjustment
-in studies of treatment effects using health care claims data. Epidemiology
-(Cambridge, Mass.), 20(4), 512.
+in studies of treatment effects using health care claims data. \emph{Epidemiology
+(Cambridge, Mass.)}, 20(4), 512.
 }
 \keyword{package}
 
