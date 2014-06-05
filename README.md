@@ -1,7 +1,7 @@
 hdps
 ====
 
-High dimensional propensity score functions
+High dimensional propensity score algorithm
 
 Install
 -------
