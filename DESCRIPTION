@@ -5,5 +5,8 @@ Version: 0.0
 Date: 2014-06-05
 Author: Sam Lendle
 Maintainer: Sam Lendle <sam.lendle@gmail.com>
-Description: The high-dimensional propensity score algorithm is a method for high-dimensional proxy adjustment in claims data. This package implements the variable transformation and varaible selection parts of the whole algorithm. 
+Description: The high-dimensional propensity score algorithm is a method for
+    high-dimensional proxy adjustment in claims data. This package implements
+    the variable transformation and varaible selection parts of the whole
+    algorithm.
 License: MIT
