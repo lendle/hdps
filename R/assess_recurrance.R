@@ -15,6 +15,7 @@
 ##' @param covars a matrix or something that can be coerced with \code{\link[base]{as.matrix}} of covariates
 ##' @return Expanded \code{covars} matrix.
 ##' @author Sam Lendle
+##' @export
 assess_recurrance <- function(covars) {
   #expands a matrix by replacing it's columns with as.numeric(x > 0), 
   # as.numeric(x > median(x)), as.numeric(x > quantile(x, prob=0.75))
