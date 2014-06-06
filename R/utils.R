@@ -9,7 +9,6 @@ column_recurrence <- function(x) {
   
   mat[, 1] <- x > 0
   if (length(quants) > 0) {
-    colnames(mat)[-1] <- names(quants)
     for (i in 1:length(quants)) {
       mat[, i+1] <- x >= quants[i]
     }
