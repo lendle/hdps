@@ -5,7 +5,7 @@
 \usage{
 hdps_screen(outcome, treatment, covars, dimension_names = NULL,
   dimension_indexes = NULL, keep_n_per_dimension = 200,
-  keep_k_total = 500)
+  keep_k_total = 500, verbose = FALSE)
 }
 \arguments{
 \item{outcome}{binary vector of outcomes}
@@ -21,6 +21,8 @@ hdps_screen(outcome, treatment, covars, dimension_names = NULL,
 \item{keep_n_per_dimension}{The maximum number of covariates to be kept per dimension by \code{\link{identify_covariates}}.}
 
 \item{keep_k_total}{Total number of covariates to keep after expanding by \code{\link{assess_recurrence}} and ordering by \code{link{prioritize_covariates}}.}
+
+\item{verbose}{Should verbose output be printed?}
 }
 \value{
 Matrix of filtered and expanded covariates.
@@ -59,6 +61,24 @@ If at this point, the number of expanded covariates is less than \code{keep_k_to
 \emph{Step 4.} Expanded covariates are ordered with \code{\link{prioritize_covariates}}.
 
 \emph{Step 5.} A matrix of the top \code{keep_k_total} expanded covariates is returned.
+}
+\examples{
+set.seed(123)
+n <- 1000
+p <- 10000
+out <- rbinom(n, 1, 0.05)
+trt <- rbinom(n, 1, 0.5)
+covars <- matrix(rbinom(n*p, 3, 0.05), n)
+colnames(covars) <- c(paste("drug", 1:(p/2), sep="_"),
+                      paste("proc", 1:(p/2), sep="_"))
+
+dimension_names <- c("drug", "proc")
+
+screened_covars <- hdps_screen(out, trt, covars,
+                               dimension_names = dimension_names,
+                               keep_n_per_dimension = 400,
+                               keep_k_total = 200,
+                               verbose=TRUE)
 }
 \author{
 Sam Lendle
