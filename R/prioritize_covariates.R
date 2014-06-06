@@ -22,12 +22,7 @@
 #' (Cambridge, Mass.)}, 20(4), 512.
 #' @export
 prioritize_covariates <- function(outcome, treatment, covars, return_bias=FALSE, keep_NaNs=FALSE) {
-  if (!all(outcome %in% c(0,1)))
-    stop("outcome should be binary")
-  if (!all(treatment %in% c(0,1)))
-    stop("treatment should be binary")
-  if (!all(covars %in% c(0,1)))
-    stop("covars should be binary")
+  check_inputs(outcome, treatment, covars, covars_bin=TRUE)
   
   treatment <- factor(treatment)
   

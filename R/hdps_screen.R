@@ -49,6 +49,9 @@
 hdps_screen <- function(outcome, treatment, covars,
                         dimension_names=NULL, dimension_indexes=NULL,
                         keep_n_per_dimension=200, keep_k_total=500) {
+  
+  check_inputs(outcome, treatment, covars)
+  
   if (!is.null(dimension_names) && !is.null(dimension_indexes)) {
     stop("At most, one of dimension_names and dimension_indexes should be specified")
   }
@@ -81,7 +84,7 @@ hdps_screen <- function(outcome, treatment, covars,
   }
   
   #Step 4. Prioritize covariates
-  ordered_indexes <- prioritize_covariates(expanded_covars, keep_NaNs=TRUE)
+  ordered_indexes <- prioritize_covariates(outcome, treatment, expanded_covars, keep_NaNs=TRUE)
   
   #(Part of) Step 5. Select covariates
   selected_indexes <- ordered_indexes[1:min(keep_k_total, length(ordered_indexes))]

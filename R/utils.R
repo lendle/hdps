@@ -25,3 +25,17 @@ calc_rr_cd <- function(outcome, covar) {
   rr_cd <- (prevs[1])/(prevs[2])
   max(rr_cd, 1/rr_cd)
 }
+
+check_inputs <- function(outcome, treatment, covars, covars_bin=FALSE) {
+  n = nrow(covars)
+  
+  if (!length(outcome) == n || !length(treatment) == n)
+    stop("outcome and treatment should be the same length, which should be equal to nrow(covars)")
+  
+  if (!all(outcome %in% c(0,1)))
+    stop("outcome should be binary")
+  if (!all(treatment %in% c(0,1)))
+    stop("treatment should be binary")
+  if (covars_bin && !all(covars %in% c(0,1)))
+    stop("covars should be binary")
+}
