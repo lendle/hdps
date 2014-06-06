@@ -1,29 +1,3 @@
-require(Rcpp)
-
-cppFunction('NumericVector colVars(NumericMatrix x) {
-            int nrow = x.nrow(), ncol = x.ncol();
-            NumericVector out(ncol);
-            
-            for (int j = 0; j < ncol; j++) {
-            double mean = 0;
-            double M2 = 0;
-            int n;
-            double delta, xx;
-            
-            for (int i = 0; i < nrow; i++) {
-            n = i+1;
-            xx = x(i,j);
-            delta = xx - mean;
-            mean += delta/n;
-            M2 = M2 + delta*(xx-mean);
-            }
-            
-            out(j) = M2/(n-1);
-            }
-            
-            return out;
-            }')
-
 column_recurrence <- function(x) {
   quants <- quantile(x[x>0], probs=c(0.5, 0.75), names=FALSE)
   names(quants) <- c("_sporadic", "_frequent")

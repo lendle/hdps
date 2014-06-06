@@ -36,6 +36,8 @@
 #' 
 #' #~~ simple examples of the most important functions ~~
 #' 
+#' @useDynLib hdps
+#' @importFrom Rcpp evalCpp
 NULL
 
 

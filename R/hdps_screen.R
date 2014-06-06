@@ -49,22 +49,6 @@
 hdps_screen <- function(outcome, treatment, covars,
                         dimension_names=NULL, dimension_indexes=NULL,
                         keep_n_per_dimension=200, keep_k_total=500) {
-  #outcome and treatment are binary vectors of length n
-  #covars is a matrix of binary variabesl of size n x p, 
-  # where p is the number of covariates for in a paritular data dimension
-  #keep: number of covariates to keep
-  # indexes: return indexes or subest of covars
-  #
-  #returns indexes of kept covariates or matrix of kept covars
-  #indexes are sorted by abs(log(multiplicitive bias))
-  #if keep is 0 or greatner than the number of covars for which multiplicitive bias
-  # could be calculated, all indexes are returned(sorted)
-  # matrix of kept covars are in the original column order
-  
-  #p_c1 - prev of each covar among exposed
-  #p_c0 - '' among unexposed
-  #rr_cd - "independent association between the [covar] and study outcome"
-  
   if (!is.null(dimension_names) && !is.null(dimension_indexes)) {
     stop("At most, one of dimension_names and dimension_indexes should be specified")
   }
