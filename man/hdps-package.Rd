@@ -23,7 +23,7 @@ This package implements part of step 2 (\code{\link{identify_covariates}}),
 steps 3 (\code{\link{assess_recurrence}}) and 4 (\code{\link{prioritize_covariates}})
 of the HDPS algorithm (Schneeweiss et al., 2009).
 
-The \code{link{hdps_screen}} function is a wrapper function for \code{\link{identify_covariates}},
+The \code{\link{hdps_screen}} function is a wrapper function for \code{\link{identify_covariates}},
 \code{\link{assess_recurrence}},  and \code{\link{prioritize_covariates}}.
 }
 \examples{
