@@ -97,7 +97,7 @@ hdps_screen <- function(outcome, treatment, covars,
       if (verbose) message("\tFiltering dimension ", 
                            if (!is.null(dimension_names)) dimension_names[i] else i,
                            "...")
-      identify_covariates(covars, keep_n_covars=keep_n_per_dimension, indexes=FALSE)
+      identify_covariates(covars[, dimension_indexes[[i]]], keep_n_covars=keep_n_per_dimension, indexes=FALSE)
     })
     if (verbose) message("Combining dimensions...")
     filtered_covars <- do.call(cbind, filtered_covars)
