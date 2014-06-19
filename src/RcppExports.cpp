@@ -5,6 +5,21 @@
 
 using namespace Rcpp;
 
+// colPrevScores
+NumericVector colPrevScores(NumericMatrix x);
+RcppExport SEXP hdps_colPrevScores(SEXP xSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP );
+        NumericVector __result = colPrevScores(x);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // colVars
 NumericVector colVars(NumericMatrix x);
 RcppExport SEXP hdps_colVars(SEXP xSEXP) {

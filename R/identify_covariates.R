@@ -1,20 +1,17 @@
 #' Given a matrix of covarites, \code{identify_covariates} returns the top \code{keep_n_covars} or the indexes of those columns.
 #'
-#' The variance of each column of \code{covars} is calculated and sorted in descending order of column variances.
+#' Columns are sorted in descending order of \code{max(prevalence, 1-prevalence)}  where \code{prevalence} is the the proportion of
+#' non-zero values in a given column.
 #' 
 #' If \code{indexes==TRUE}, a vector of the top \code{keep_n_covars} column indexes is returned.
 #' 
 #' If \code{indexes==FALSE}, a matrix of covariates is returned whos columns are the top \code{keep_n_covars} colums of
 #' \code{covars}. Columns are in their original order.
-#' If also \code{keep_n_covars >= ncol(covar)}, then the function returns immediately without calculating column variances,
-#' as it is unnecessary.
+#' If also \code{keep_n_covars >= ncol(covar)}, then the function returns immediately without ranking columns in terms of
+#' prevalence as it is unecessary.
 #' 
 #' \strong{Differences from Schneeweiss et al. (2009):} 
 #' \itemize{
-#'   \item{Instead of ranking covariates by prevalence (or equivalently, \code{var(col1 > 0)} as covariates are typically counts), 
-#'   covariates are ranked by variance.  This means that a covariates \code{col1=c(0,1,3)} will be ranked higher than \code{col2=c(0,1,1)}.
-#'   If ranked by prevalence, \code{col1} and \code{col2} would be the same.
-#'   }
 #'   \item{Covariates that have fewer than 100 non-zero values are not automatically dropped. 
 #'   If typical covariates tend to have more than 100 non-zero values will typically be ranked higher than those with fewer than 100
 #'   automatically.}
@@ -35,7 +32,7 @@ identify_covariates <- function(covars, keep_n_covars=200, indexes=FALSE) {
   
   if (ncol(covars) <= keep_n_covars && !indexes) return(covars)
   
-  vars <- colVars(as.matrix(covars))
+  vars <- colPrevScores(covars>0)
   var_ords <- order(vars, decreasing=TRUE)[1:min(keep_n_covars, ncol(covars))] 
   
   if (indexes) {
