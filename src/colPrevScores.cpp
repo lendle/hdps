@@ -15,7 +15,7 @@ NumericVector colPrevScores(NumericMatrix x) {
     
     double prev = (double) num_non_zero/nrow;
     
-    out(j) = std::max(prev, 1.0-prev);
+    out(j) = std::min(prev, 1.0-prev);
   }
   
   return out;

@@ -1,6 +1,6 @@
 #' Given a matrix of covarites, \code{identify_covariates} returns the top \code{keep_n_covars} or the indexes of those columns.
 #'
-#' Columns are sorted in descending order of \code{max(prevalence, 1-prevalence)}  where \code{prevalence} is the the proportion of
+#' Columns are sorted in descending order of \code{min(prevalence, 1-prevalence)}  where \code{prevalence} is the the proportion of
 #' non-zero values in a given column.
 #' 
 #' If \code{indexes==TRUE}, a vector of the top \code{keep_n_covars} column indexes is returned.
