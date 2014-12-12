@@ -10,6 +10,7 @@ Description: The high-dimensional propensity score algorithm is a method for
     the variable transformation and variable selection parts of the
     algorithm.
 License: MIT + file LICENSE
-Imports:
+Imports: 
     Rcpp (>= 0.11.1)
 LinkingTo: Rcpp
+Suggests: testthat
