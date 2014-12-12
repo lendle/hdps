@@ -1,20 +1,32 @@
-column_recurrence <- function(x) {
+
+get_quantiles <- function(x) {
   quants <- quantile(x[x>0], probs=c(0.5, 0.75), names=FALSE)
-  names(quants) <- c("_sporadic", "_frequent")
-  if (quants[1]==quants[2]) quants <- quants[1]
-  quants <- quants[quants != 1]
-    
-  mat <- matrix(0, length(x), length(quants) + 1)    
-  colnames(mat) <- c("_once", names(quants))
+  quants <- list(list(q="_sporadic", count=quants[1]),
+                 list(q="_frequent", count=quants[2]))
+  if (quants[[1]]$count==quants[[2]]$count) quants <- quants[1]
+  
+  quants <- Filter(function(q) q$count != 1, quants)
+  quants <- c(list(list(q="_once", count=1)), quants)
+  quants
+}
+
+column_recurrence <- function(x, quants) {
+  mat <- matrix(0, length(x), length(quants))    
+  colnames(mat) <- sapply(quants, `[[`, "q")
   
   mat[, 1] <- x > 0
   if (length(quants) > 0) {
     for (i in 1:length(quants)) {
-      mat[, i+1] <- x >= quants[i]
+      mat[, i] <- x >= quants[[i]]$count
     }
   }
   
-  unique(mat, MARGIN=2)
+  dups <- duplicated(mat, MARGIN=2)
+  if (any(dups)) {
+    list(mat=mat[, !dups], quants=quants[dups])
+  } else {
+    list(mat=mat, quants=quants)
+  }
 }
 
 calc_rr_cd <- function(outcome, covar) {
