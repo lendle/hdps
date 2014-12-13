@@ -147,7 +147,16 @@ predict.hdps_covars <- function(object, newdata=NULL, keep_k_total) {
   if (missing(keep_k_total)) keep_k_total <- object$keep_k_total
   
   if (!is.null(newdata)) {
-    stop("not implemented")
+    #could be more efficient here
+    # by first filtering the quants to only the keep_k_total needed
+    # then by grouping by varname
+    mats <- lapply(object$quants, function(quant) {
+      x <- newdata[, quant$varname]
+      mat <- column_recurrence(x, list(quant))$mat
+      colnames(mat) <- paste(quant$varname, colnames(mat), sep="")    
+      mat
+    })
+    expanded_covars <- do.call(cbind, mats)
   } else {
     expanded_covars <- object$expanded_covars
   }
