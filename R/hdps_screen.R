@@ -1,10 +1,10 @@
 #' The \code{hdps_screen} function performs part of step 2 (\code{\link{identify_covariates}}), 
-#' steps 3 (\code{\link{assess_recurrence}}) and 4 (\code{\link{prioritize_covariates}}),
-#' and part of step 5 of the HDPS algorithm (Schneeweiss et al., 2009).
+#' steps 3 (\code{\link{assess_recurrence}}) and 4 (\code{\link{prioritize_covariates}})
+#' of the HDPS algorithm (Schneeweiss et al., 2009).
 #'
 #' The \code{hdps_screen} function performs part of step 2 (\code{\link{identify_covariates}}), 
-#' steps 3 (\code{\link{assess_recurrence}}) and 4 (\code{\link{prioritize_covariates}}),
-#' and part of step 5 of the HDPS algorithm (Schneeweiss et al., 2009).
+#' steps 3 (\code{\link{assess_recurrence}}) and 4 (\code{\link{prioritize_covariates}})
+#' of the HDPS algorithm (Schneeweiss et al., 2009).
 #' 
 #' \emph{Step 2.} Columns of \code{covars} are split by data dimension (as defined in Schneeweiss et al. (2009)) and
 #' filtered by \code{\link{identify_covariates}}.
@@ -29,7 +29,7 @@
 #' 
 #' \emph{Step 4.} Expanded covariates are ordered with \code{\link{prioritize_covariates}}.
 #' 
-#' \emph{Step 5.} A matrix of the top \code{keep_k_total} expanded covariates is returned. 
+#' \emph{Step 5.} Step 5 can be performed with \code{\link{predict.covars}}.
 #' 
 #' @title hdps_screen
 #' @param outcome binary vector of outcomes
@@ -40,7 +40,8 @@
 #' @param keep_n_per_dimension The maximum number of covariates to be kept per dimension by \code{\link{identify_covariates}}.
 #' @param keep_k_total Total number of covariates to keep after expanding by \code{\link{assess_recurrence}} and ordering by \code{link{prioritize_covariates}}.
 #' @param verbose Should verbose output be printed?
-#' @return Matrix of filtered and expanded covariates. 
+#' @return An object of class \code{hdps_covars}
+#' @seealso \code{\link{predict.covars}}
 #' @references Schneeweiss, S., Rassen, J. A., Glynn, R. J., Avorn, J., Mogun,
 #' H., & Brookhart, M. A. (2009). High-dimensional propensity score adjustment
 #' in studies of treatment effects using health care claims data. \emph{Epidemiology
@@ -58,11 +59,14 @@
 #' 
 #' dimension_names <- c("drug", "proc")
 #' 
-#' screened_covars <- hdps_screen(out, trt, covars, 
-#'                                dimension_names = dimension_names,
-#'                                keep_n_per_dimension = 400,
-#'                                keep_k_total = 200,
-#'                                verbose=TRUE)
+#' screened_covars_fit <- hdps_screen(out, trt, covars, 
+#'                                    dimension_names = dimension_names,
+#'                                    keep_n_per_dimension = 400,
+#'                                    keep_k_total = 200,
+#'                                    verbose=TRUE)
+#'                                    
+#' screened_covars <- predict(screened_covars_fit)
+#' 
 #' @export
 hdps_screen <- function(outcome, treatment, covars,
                         dimension_names=NULL, dimension_indexes=NULL,
@@ -105,21 +109,65 @@ hdps_screen <- function(outcome, treatment, covars,
   
   #Step 3. Assess recurrence
   if (verbose) message("Expanding covariates...")
-  expanded_covars <- assess_recurrence(filtered_covars)
+  ar <- assess_recurrence(filtered_covars)
+  expanded_covars <- ar[["mat"]]
+  quants <- ar[["quants"]]
   
-  if (ncol(expanded_covars) <= keep_k_total) {
-    return(expanded_covars)
-  }
+  if (dim(expanded_covars)[2] != length(quants)) stop("something is wrong...")
   
   #Step 4. Prioritize covariates
   if (verbose) message("Prioritizing covariates...")
   ordered_indexes <- prioritize_covariates(outcome, treatment, expanded_covars, keep_NaNs=TRUE)
   
-  #(Part of) Step 5. Select covariates
+  res <- list(expanded_covars=expanded_covars,
+       quants=quants,
+       ordered_indexes=ordered_indexes,
+       keep_k_total=keep_k_total
+       )
+  if (verbose) message("...Done!")
+  class(res) <- "hdps_covars"
+  
+  return(res)
+
+}
+
+#' returns the matix of covariates based on an hdps screening
+#'
+#' .. content for \details{} ..
+#' @title Get matrix of hdps selected covariates
+#' @param object object of class \code{hdps_covars}
+#' @param newdata \code{NULL}, or a matrix who's columns have names corresponding to those selected by hdps in \code{object}. 
+#' If \code{NULL} selected covariates from original matrix used in the screening step are returned.
+#' @param keep_k_total change \code{keep_k_total} from the original call to \code{\link{hdps_screen}}
+#' @return A matrix of hdps selected covariates
+#' @seealso \link{hdps_screen}
+#' @author Sam Lendle
+#' @export
+predict.hdps_covars <- function(object, newdata=NULL, keep_k_total) {
+  if (missing(keep_k_total)) keep_k_total <- object$keep_k_total
+  
+  if (!is.null(newdata)) {
+    #could be more efficient here
+    # by first filtering the quants to only the keep_k_total needed
+    # then by grouping by varname
+    mats <- lapply(object$quants, function(quant) {
+      x <- newdata[, quant$varname]
+      mat <- column_recurrence(x, list(quant))$mat
+      colnames(mat) <- paste(quant$varname, colnames(mat), sep="")    
+      mat
+    })
+    expanded_covars <- do.call(cbind, mats)
+  } else {
+    expanded_covars <- object$expanded_covars
+  }
+  
+  if (ncol(expanded_covars) <= keep_k_total) {
+    return(expanded_covars)
+  }
+  
+  ordered_indexes <- object$ordered_indexes
   selected_indexes <- ordered_indexes[1:min(keep_k_total, length(ordered_indexes))]
   selected_covars <- expanded_covars[, sort(selected_indexes)]
-  
-  if (verbose) message("...Done!")
   return(selected_covars)
 }
   

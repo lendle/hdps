@@ -27,13 +27,24 @@ assess_recurrence <- function(covars) {
   
   covars <- as.matrix(covars)
   
-  mats <- lapply(1:ncol(covars), function(i) column_recurrence(covars[,i]))
+  mats_quants <- lapply(1:ncol(covars), function(i) {
+    column <- covars[,i]
+    quants <- get_quantiles(column)
+    column_recurrence(column, quants)
+    })
   
-  cnams <- colnames(covars)
+  mats <- lapply(mats_quants, `[[`, "mat")#function(mq) mq[["mat"]])
+  quants <- lapply(mats_quants, `[[`, "quants")#function(mq) mq[["quants"]])
+  
+  cnams <- colnames(covars)  
   if (!is.null(cnams)) {
     for (i in seq_along(mats)) {
       colnames(mats[[i]]) <- paste(cnams[i], colnames(mats[[i]]), sep="")    
+      quants[[i]] <- lapply(quants[[i]], function(q) c(varname=cnams[i], q))
     }
   }
-  do.call(cbind, mats)
+
+  mat <- do.call(cbind, mats)
+  quants <- do.call(c, quants)
+  list(mat=mat, quants=quants)
 }

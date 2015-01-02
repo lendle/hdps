@@ -25,17 +25,17 @@ hdps_screen(outcome, treatment, covars, dimension_names = NULL,
 \item{verbose}{Should verbose output be printed?}
 }
 \value{
-Matrix of filtered and expanded covariates.
+An object of class \code{hdps_covars}
 }
 \description{
 The \code{hdps_screen} function performs part of step 2 (\code{\link{identify_covariates}}),
-steps 3 (\code{\link{assess_recurrence}}) and 4 (\code{\link{prioritize_covariates}}),
-and part of step 5 of the HDPS algorithm (Schneeweiss et al., 2009).
+steps 3 (\code{\link{assess_recurrence}}) and 4 (\code{\link{prioritize_covariates}})
+of the HDPS algorithm (Schneeweiss et al., 2009).
 }
 \details{
 The \code{hdps_screen} function performs part of step 2 (\code{\link{identify_covariates}}),
-steps 3 (\code{\link{assess_recurrence}}) and 4 (\code{\link{prioritize_covariates}}),
-and part of step 5 of the HDPS algorithm (Schneeweiss et al., 2009).
+steps 3 (\code{\link{assess_recurrence}}) and 4 (\code{\link{prioritize_covariates}})
+of the HDPS algorithm (Schneeweiss et al., 2009).
 
 \emph{Step 2.} Columns of \code{covars} are split by data dimension (as defined in Schneeweiss et al. (2009)) and
 filtered by \code{\link{identify_covariates}}.
@@ -60,7 +60,7 @@ If at this point, the number of expanded covariates is less than \code{keep_k_to
 
 \emph{Step 4.} Expanded covariates are ordered with \code{\link{prioritize_covariates}}.
 
-\emph{Step 5.} A matrix of the top \code{keep_k_total} expanded covariates is returned.
+\emph{Step 5.} Step 5 can be performed with \code{\link{predict.covars}}.
 }
 \examples{
 set.seed(123)
@@ -74,11 +74,13 @@ colnames(covars) <- c(paste("drug", 1:(p/2), sep="_"),
 
 dimension_names <- c("drug", "proc")
 
-screened_covars <- hdps_screen(out, trt, covars,
-                               dimension_names = dimension_names,
-                               keep_n_per_dimension = 400,
-                               keep_k_total = 200,
-                               verbose=TRUE)
+screened_covars_fit <- hdps_screen(out, trt, covars,
+                                   dimension_names = dimension_names,
+                                   keep_n_per_dimension = 400,
+                                   keep_k_total = 200,
+                                   verbose=TRUE)
+
+screened_covars <- predict(screened_covars_fit)
 }
 \author{
 Sam Lendle
@@ -88,5 +90,8 @@ Schneeweiss, S., Rassen, J. A., Glynn, R. J., Avorn, J., Mogun,
 H., & Brookhart, M. A. (2009). High-dimensional propensity score adjustment
 in studies of treatment effects using health care claims data. \emph{Epidemiology
 (Cambridge, Mass.)}, 20(4), 512.
+}
+\seealso{
+\code{\link{predict.covars}}
 }
 
