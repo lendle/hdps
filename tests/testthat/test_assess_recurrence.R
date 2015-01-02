@@ -4,21 +4,39 @@ test_that("get_quantiles and column_recurrence work when x is binary", {
   x <- c(0,0,0,0,1,1,1)
   mat <- matrix(x, length(x), 1)
   colnames(mat) = c("_once")
-  expect_equal(column_recurrence(x, get_quantiles(x))$mat, mat)
+  cr <- column_recurrence(x, get_quantiles(x))
+  expect_equal(cr$mat, mat)
+  expect_equal(colnames(cr$mat), sapply(cr$quants, `[[`, "q"))
 })
 
 test_that("get_quantiles and column_recurrence work when 50th and 75th %ile are the same", {
   x <- c(0,0,0,0,1,1,1,3,3,3,3,3)
   mat <- cbind(as.numeric(x>0), as.numeric(x >=3))
   colnames(mat) = c("_once", "_sporadic")
-  expect_equal(column_recurrence(x, get_quantiles(x))$mat, mat)
+  cr <- column_recurrence(x, get_quantiles(x))
+  expect_equal(cr$mat, mat)
+  expect_equal(dim(cr$mat)[2], length(cr$quants))
+  expect_equal(colnames(cr$mat), sapply(cr$quants, `[[`, "q"))
 })
 
 test_that("get_quantiles and column_recurrence work when 50th %ile is 1", {
   x <- c(0,0,0,0,1,1,1,1,1,3,3,3)
   mat <- cbind(as.numeric(x>0), as.numeric(x >=3))
   colnames(mat) = c("_once", "_frequent")
-  expect_equal(column_recurrence(x, get_quantiles(x))$mat, mat)
+  cr <- column_recurrence(x, get_quantiles(x))
+  expect_equal(cr$mat, mat)
+  expect_equal(dim(cr$mat)[2], length(cr$quants))
+  expect_equal(colnames(cr$mat), sapply(cr$quants, `[[`, "q"))
+})
+
+test_that("get_quantiles and column_recurrence work when 50th %ile is 1.5 and 75th is 2", {
+  x <- c(0,0,0,0,1,1,1,1,1,2,2,2,2,2)
+  mat <- cbind(as.numeric(x>0), as.numeric(x >1))
+  colnames(mat) = c("_once", "_sporadic")
+  cr <- column_recurrence(x, get_quantiles(x))
+  expect_equal(cr$mat, mat)
+  expect_equal(dim(cr$mat)[2], length(cr$quants))
+  expect_equal(colnames(cr$mat), sapply(cr$quants, `[[`, "q"))
 })
 
 test_that("assess_recurrence works", {

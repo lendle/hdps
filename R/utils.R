@@ -23,7 +23,7 @@ column_recurrence <- function(x, quants) {
   
   dups <- duplicated(mat, MARGIN=2)
   if (any(dups)) {
-    list(mat=mat[, !dups], quants=quants[dups])
+    list(mat=mat[, !dups], quants=quants[!dups])
   } else {
     list(mat=mat, quants=quants)
   }
