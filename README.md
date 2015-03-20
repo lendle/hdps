@@ -1,6 +1,8 @@
 hdps
 ====
 
+[![Build Status](https://travis-ci.org/lendle/hdps.svg)](https://travis-ci.org/lendle/hdps)
+
 High dimensional propensity score algorithm
 
 Install
