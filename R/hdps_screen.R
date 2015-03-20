@@ -29,7 +29,7 @@
 #' 
 #' \emph{Step 4.} Expanded covariates are ordered with \code{\link{prioritize_covariates}}.
 #' 
-#' \emph{Step 5.} Step 5 can be performed with \code{\link{predict.covars}}.
+#' \emph{Step 5.} Step 5 can be performed with \code{\link{predict.hdps_covars}}.
 #' 
 #' @title hdps_screen
 #' @param outcome binary vector of outcomes
@@ -41,7 +41,7 @@
 #' @param keep_k_total Total number of covariates to keep after expanding by \code{\link{assess_recurrence}} and ordering by \code{link{prioritize_covariates}}.
 #' @param verbose Should verbose output be printed?
 #' @return An object of class \code{hdps_covars}
-#' @seealso \code{\link{predict.covars}}
+#' @seealso \code{\link{predict.hdps_covars}}
 #' @references Schneeweiss, S., Rassen, J. A., Glynn, R. J., Avorn, J., Mogun,
 #' H., & Brookhart, M. A. (2009). High-dimensional propensity score adjustment
 #' in studies of treatment effects using health care claims data. \emph{Epidemiology
@@ -133,17 +133,18 @@ hdps_screen <- function(outcome, treatment, covars,
 
 #' returns the matix of covariates based on an hdps screening
 #'
-#' .. content for \details{} ..
+#' .. content for details ..
 #' @title Get matrix of hdps selected covariates
 #' @param object object of class \code{hdps_covars}
 #' @param newdata \code{NULL}, or a matrix who's columns have names corresponding to those selected by hdps in \code{object}. 
 #' If \code{NULL} selected covariates from original matrix used in the screening step are returned.
 #' @param keep_k_total change \code{keep_k_total} from the original call to \code{\link{hdps_screen}}
+#' @param ... ignored
 #' @return A matrix of hdps selected covariates
 #' @seealso \link{hdps_screen}
 #' @author Sam Lendle
 #' @export
-predict.hdps_covars <- function(object, newdata=NULL, keep_k_total) {
+predict.hdps_covars <- function(object, newdata=NULL, keep_k_total, ...) {
   if (missing(keep_k_total)) keep_k_total <- object$keep_k_total
   
   if (!is.null(newdata)) {

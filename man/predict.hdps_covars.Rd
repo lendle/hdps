@@ -4,7 +4,7 @@
 \alias{predict.hdps_covars}
 \title{Get matrix of hdps selected covariates}
 \usage{
-\method{predict}{hdps_covars}(object, newdata = NULL, keep_k_total)
+\method{predict}{hdps_covars}(object, newdata = NULL, keep_k_total, ...)
 }
 \arguments{
 \item{object}{object of class \code{hdps_covars}}
@@ -13,6 +13,8 @@
 If \code{NULL} selected covariates from original matrix used in the screening step are returned.}
 
 \item{keep_k_total}{change \code{keep_k_total} from the original call to \code{\link{hdps_screen}}}
+
+\item{...}{ignored}
 }
 \value{
 A matrix of hdps selected covariates
@@ -21,7 +23,7 @@ A matrix of hdps selected covariates
 returns the matix of covariates based on an hdps screening
 }
 \details{
-.. content for \details{} ..
+.. content for details ..
 }
 \author{
 Sam Lendle

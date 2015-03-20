@@ -61,7 +61,7 @@ If at this point, the number of expanded covariates is less than \code{keep_k_to
 
 \emph{Step 4.} Expanded covariates are ordered with \code{\link{prioritize_covariates}}.
 
-\emph{Step 5.} Step 5 can be performed with \code{\link{predict.covars}}.
+\emph{Step 5.} Step 5 can be performed with \code{\link{predict.hdps_covars}}.
 }
 \examples{
 set.seed(123)
@@ -93,6 +93,6 @@ in studies of treatment effects using health care claims data. \emph{Epidemiolog
 (Cambridge, Mass.)}, 20(4), 512.
 }
 \seealso{
-\code{\link{predict.covars}}
+\code{\link{predict.hdps_covars}}
 }
 
