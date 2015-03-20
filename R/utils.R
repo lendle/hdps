@@ -1,16 +1,16 @@
 
 get_quantiles <- function(x) {
   quants <- quantile(x[x>0], probs=c(0.5, 0.75), names=FALSE)
-  quants <- list(list(q="_sporadic", count=quants[1]),
-                 list(q="_frequent", count=quants[2]))
-  if (quants[[1]]$count==quants[[2]]$count) quants <- quants[1]
-  
-  quants <- Filter(function(q) q$count != 1, quants)
+  quants <- list(list(q="_sporadic", count=ceiling(quants[1])),
+                 list(q="_frequent", count=ceiling(quants[2])))
   quants <- c(list(list(q="_once", count=1)), quants)
-  quants
+  cutoffs <- sapply(quants, `[[`, "count")
+  cutoffs[1] <- min(x[x>0])
+  dups <- duplicated(cutoffs)
+  quants[!dups]
 }
 
-column_recurrence <- function(x, quants) {
+column_recurrence <- function(x, quants, warndup=FALSE) {
   mat <- matrix(0, length(x), length(quants))    
   colnames(mat) <- sapply(quants, `[[`, "q")
   
@@ -21,12 +21,15 @@ column_recurrence <- function(x, quants) {
     }
   }
   
-  dups <- duplicated(mat, MARGIN=2)
-  if (any(dups)) {
-    list(mat=mat[, !dups], quants=quants[!dups])
-  } else {
-    list(mat=mat, quants=quants)
+  if (warndup) {
+    dups <- duplicated(mat, MARGIN=2)
+    if (any(dups)) {
+      warning("Duplicate columns in mat. This should not happen when hdps_screen is called, but could when predict is called.")
+    }
   }
+  
+  
+  list(mat=mat, quants=quants)
 }
 
 calc_rr_cd <- function(outcome, covar) {
