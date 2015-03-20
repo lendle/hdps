@@ -1,11 +1,13 @@
-
 get_quantiles <- function(x) {
-  quants <- quantile(x[x>0], probs=c(0.5, 0.75), names=FALSE)
-  quants <- list(list(q="_sporadic", count=ceiling(quants[1])),
-                 list(q="_frequent", count=ceiling(quants[2])))
-  quants <- c(list(list(q="_once", count=1)), quants)
-  cutoffs <- sapply(quants, `[[`, "count")
-  cutoffs[1] <- min(x[x>0])
+  xx0 <- x[x>0]
+  quants <- quantile(xx0, probs=c(0.5, 0.75), names=FALSE, type=2)
+  quants <- list(list(q="_once", count=1),
+                 list(q="_sporadic", count=quants[1]),
+                 list(q="_frequent", count=quants[2]))
+  
+  counts <- sapply(quants, `[[`, "count")
+  ux <- unique(xx0)
+  cutoffs <- sapply(counts, function(count) min(ux[ux >= count]))  
   dups <- duplicated(cutoffs)
   quants[!dups]
 }

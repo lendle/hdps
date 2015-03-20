@@ -49,6 +49,16 @@ test_that("get_quantiles and column_recurrence work when min is 50th %ile", {
   expect_equal(colnames(cr$mat), sapply(cr$quants, `[[`, "q"))
 })
 
+test_that("dups are taken care of when quantiles are ints but not in the data", {
+  x <- c(0,0, 5, 1, 5, 5, 3, 7, 2, 5, 5, 3, 1, 3)
+  mat <- cbind(as.numeric(x>0), x > 4)
+  cr <- column_recurrence(x, get_quantiles(x), warndup=TRUE)
+  colnames(mat) = c("_once", "_sporadic")
+  expect_equal(cr$mat, mat)
+  
+})
+
+
 test_that("assess_recurrence works", {
   dat <- cbind(a=c(0,0,0,0,1,1,1,3,3,3,3,3),
                b=c(0,0,0,0,1,1,1,1,1,3,3,3))
