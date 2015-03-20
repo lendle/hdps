@@ -30,7 +30,7 @@ assess_recurrence <- function(covars) {
   mats_quants <- lapply(1:ncol(covars), function(i) {
     column <- covars[,i]
     quants <- get_quantiles(column)
-    column_recurrence(column, quants)
+    column_recurrence(column, quants, warndup=TRUE)
     })
   
   mats <- lapply(mats_quants, `[[`, "mat")#function(mq) mq[["mat"]])

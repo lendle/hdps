@@ -39,6 +39,16 @@ test_that("get_quantiles and column_recurrence work when 50th %ile is 1.5 and 75
   expect_equal(colnames(cr$mat), sapply(cr$quants, `[[`, "q"))
 })
 
+test_that("get_quantiles and column_recurrence work when min is 50th %ile", {
+  x <- c(0,0,0,0,2,2,2,2,2,2,2,2, 3,3)
+  mat <- cbind(as.numeric(x>0))
+  colnames(mat) = c("_once")
+  cr <- column_recurrence(x, get_quantiles(x))
+  expect_equal(cr$mat, mat)
+  expect_equal(dim(cr$mat)[2], length(cr$quants))
+  expect_equal(colnames(cr$mat), sapply(cr$quants, `[[`, "q"))
+})
+
 test_that("assess_recurrence works", {
   dat <- cbind(a=c(0,0,0,0,1,1,1,3,3,3,3,3),
                b=c(0,0,0,0,1,1,1,1,1,3,3,3))
