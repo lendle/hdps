@@ -34,14 +34,6 @@ column_recurrence <- function(x, quants, warndup=FALSE) {
   list(mat=mat, quants=quants)
 }
 
-calc_rr_cd <- function(outcome, covar) {
-  #returns rr_cd if rr_cd > 1, else returns 1/rr_cd
-  #might return Inf if there are 0 outcomes at a particular level of the covar
-  prevs <- by(outcome, covar, mean)
-  rr_cd <- (prevs[1])/(prevs[2])
-  max(rr_cd, 1/rr_cd)
-}
-
 check_inputs <- function(outcome, treatment, covars, covars_bin=FALSE) {
   n = nrow(covars)
   

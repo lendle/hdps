@@ -31,7 +31,7 @@ prioritize_covariates <- function(outcome, treatment, covars, return_bias=FALSE,
   p_c0 <- covar_prev[[levels(treatment)[2]]]
   
   #a vector of rr_cd if rr_cd > 1, 1/rr_cd otherwise
-  rr_cds <- apply(covars, 2, calc_rr_cd, outcome=outcome)
+  rr_cds <- calc_rr_cds(outcome, covars)
   
   #Infs in rr_cds will result in NaN for some covariates
   bias_mult <- (p_c1 * (rr_cds - 1) + 1) / (p_c0 * (rr_cds - 1) + 1)
