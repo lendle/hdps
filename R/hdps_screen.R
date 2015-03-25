@@ -40,6 +40,7 @@
 #' @param keep_n_per_dimension The maximum number of covariates to be kept per dimension by \code{\link{identify_covariates}}.
 #' @param keep_k_total Total number of covariates to keep after expanding by \code{\link{assess_recurrence}} and ordering by \code{link{prioritize_covariates}}.
 #' @param verbose Should verbose output be printed?
+#' @param debug Enables some debuging checks which slow things down, but may yield useful warnings or errors.
 #' @return An object of class \code{hdps_covars}
 #' @seealso \code{\link{predict.hdps_covars}}
 #' @references Schneeweiss, S., Rassen, J. A., Glynn, R. J., Avorn, J., Mogun,
@@ -71,7 +72,7 @@
 hdps_screen <- function(outcome, treatment, covars,
                         dimension_names=NULL, dimension_indexes=NULL,
                         keep_n_per_dimension=200, keep_k_total=500,
-                        verbose=FALSE) {
+                        verbose=FALSE, debug=FALSE) {
   
   check_inputs(outcome, treatment, covars)
   
@@ -109,7 +110,7 @@ hdps_screen <- function(outcome, treatment, covars,
   
   #Step 3. Assess recurrence
   if (verbose) message("Expanding covariates...")
-  ar <- assess_recurrence(filtered_covars)
+  ar <- assess_recurrence(filtered_covars, debug=debug)
   expanded_covars <- ar[["mat"]]
   quants <- ar[["quants"]]
   

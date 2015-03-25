@@ -6,7 +6,7 @@
 \usage{
 hdps_screen(outcome, treatment, covars, dimension_names = NULL,
   dimension_indexes = NULL, keep_n_per_dimension = 200,
-  keep_k_total = 500, verbose = FALSE)
+  keep_k_total = 500, verbose = FALSE, debug = FALSE)
 }
 \arguments{
 \item{outcome}{binary vector of outcomes}
@@ -24,6 +24,8 @@ hdps_screen(outcome, treatment, covars, dimension_names = NULL,
 \item{keep_k_total}{Total number of covariates to keep after expanding by \code{\link{assess_recurrence}} and ordering by \code{link{prioritize_covariates}}.}
 
 \item{verbose}{Should verbose output be printed?}
+
+\item{debug}{Enables some debuging checks which slow things down, but may yield useful warnings or errors.}
 }
 \value{
 An object of class \code{hdps_covars}

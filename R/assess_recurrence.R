@@ -13,6 +13,7 @@
 #' 
 #' @title assess_recurrence
 #' @param covars a matrix or something that can be coerced with \code{\link[base]{as.matrix}} of covariates
+#' @param debug Enables some debuging checks which slow things down, but may yield useful warnings or errors.
 #' @return Expanded \code{covars} matrix.
 #' @author Sam Lendle
 #' @references Schneeweiss, S., Rassen, J. A., Glynn, R. J., Avorn, J., Mogun,
@@ -20,18 +21,23 @@
 #' in studies of treatment effects using health care claims data. \emph{Epidemiology
 #' (Cambridge, Mass.)}, 20(4), 512.
 #' @export
-assess_recurrence <- function(covars) {
+assess_recurrence <- function(covars, debug=FALSE) {
   #expands a matrix by replacing it's columns with as.numeric(x > 0), 
   # as.numeric(x > median(x)), as.numeric(x > quantile(x, prob=0.75))
   #only unique columns (per original column) are kept
   
   covars <- as.matrix(covars)
   
-  mats_quants <- lapply(1:ncol(covars), function(i) {
+  temp <- function(i) {
     column <- covars[,i]
     quants <- get_quantiles(column)
-    column_recurrence(column, quants, warndup=TRUE)
-    })
+    column_recurrence(column, quants, warndup=debug)
+  }
+  #mats_quants <- lapply(1:ncol(covars), temp)
+  mats_quants <- list()
+  
+  for (i in 1:ncol(covars))
+    mats_quants[[i]] = temp(i)
   
   mats <- lapply(mats_quants, `[[`, "mat")#function(mq) mq[["mat"]])
   quants <- lapply(mats_quants, `[[`, "quants")#function(mq) mq[["quants"]])

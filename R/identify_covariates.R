@@ -30,9 +30,8 @@
 #' @export
 identify_covariates <- function(covars, keep_n_covars=200, indexes=FALSE) {
   
-  if (ncol(covars) <= keep_n_covars && !indexes) return(covars)
-  
-  vars <- colPrevScores(covars>0)
+  if (!indexes && ncol(covars) <= keep_n_covars) return(covars)
+  vars <- colPrevScores(covars)
   var_ords <- order(vars, decreasing=TRUE)[1:min(keep_n_covars, ncol(covars))] 
   
   if (indexes) {

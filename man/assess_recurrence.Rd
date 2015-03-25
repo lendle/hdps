@@ -4,10 +4,12 @@
 \alias{assess_recurrence}
 \title{assess_recurrence}
 \usage{
-assess_recurrence(covars)
+assess_recurrence(covars, debug = FALSE)
 }
 \arguments{
 \item{covars}{a matrix or something that can be coerced with \code{\link[base]{as.matrix}} of covariates}
+
+\item{debug}{Enables some debuging checks which slow things down, but may yield useful warnings or errors.}
 }
 \value{
 Expanded \code{covars} matrix.

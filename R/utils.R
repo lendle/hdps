@@ -16,11 +16,8 @@ column_recurrence <- function(x, quants, warndup=FALSE) {
   mat <- matrix(0, length(x), length(quants))    
   colnames(mat) <- sapply(quants, `[[`, "q")
   
-  mat[, 1] <- x > 0
-  if (length(quants) > 0) {
-    for (i in 1:length(quants)) {
-      mat[, i] <- x >= quants[[i]]$count
-    }
+  for (i in 1:length(quants)) {
+    mat[, i] <- x >= quants[[i]]$count
   }
   
   if (warndup) {
