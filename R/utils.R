@@ -34,6 +34,9 @@ column_recurrence <- function(x, quants, warndup=FALSE) {
 check_inputs <- function(outcome, treatment, covars, covars_bin=FALSE) {
   n = nrow(covars)
   
+  if(!is.vector(outcome)) stop("outcome should be a vector")
+  if(!is.vector(treatment)) stop("outcome should be a treatment")
+  
   if (!length(outcome) == n || !length(treatment) == n)
     stop("outcome and treatment should be the same length, which should be equal to nrow(covars)")
   

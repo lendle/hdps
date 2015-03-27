@@ -16,7 +16,7 @@ algorithm.
 Package: \tab hdps\cr
 Type: \tab Package\cr
 Version: \tab 0.1.3\cr
-Date: \tab 2015-03-24\cr
+Date: \tab 2015-03-26\cr
 License: \tab MIT \cr
 }
 

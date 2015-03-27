@@ -31,7 +31,7 @@
 identify_covariates <- function(covars, keep_n_covars=200, indexes=FALSE) {
   
   if (!indexes && ncol(covars) <= keep_n_covars) return(covars)
-  vars <- colPrevScores(covars)
+  vars <- colPrevScores(as.matrix(covars))
   var_ords <- order(vars, decreasing=TRUE)[1:min(keep_n_covars, ncol(covars))] 
   
   if (indexes) {
