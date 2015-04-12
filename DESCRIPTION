@@ -1,8 +1,8 @@
 Package: hdps
 Type: Package
 Title: High-dimensional propensity score algorithm
-Version: 0.1.4
-Date: 2015-03-26
+Version: 0.1.5
+Date: 2015-05-12
 Author: Sam Lendle
 Maintainer: Sam Lendle <sam.lendle@gmail.com>
 Description: The high-dimensional propensity score algorithm is a method for
@@ -11,7 +11,9 @@ Description: The high-dimensional propensity score algorithm is a method for
     algorithm.
 License: MIT + file LICENSE
 Imports:
-    Rcpp (>= 0.11.1)
+    Rcpp (>= 0.11.1),
+    Matrix,
+    glmnet    
 LinkingTo: Rcpp
 Suggests:
     testthat

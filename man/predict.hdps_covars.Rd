@@ -22,9 +22,6 @@ A matrix of hdps selected covariates
 \description{
 returns the matix of covariates based on an hdps screening
 }
-\details{
-.. content for details ..
-}
 \author{
 Sam Lendle
 }

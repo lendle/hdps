@@ -134,7 +134,6 @@ hdps_screen <- function(outcome, treatment, covars,
 
 #' returns the matix of covariates based on an hdps screening
 #'
-#' .. content for details ..
 #' @title Get matrix of hdps selected covariates
 #' @param object object of class \code{hdps_covars}
 #' @param newdata \code{NULL}, or a matrix who's columns have names corresponding to those selected by hdps in \code{object}. 

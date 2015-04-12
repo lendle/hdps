@@ -15,8 +15,8 @@ algorithm.
 \tabular{ll}{
 Package: \tab hdps\cr
 Type: \tab Package\cr
-Version: \tab 0.1.3\cr
-Date: \tab 2015-03-26\cr
+Version: \tab 0.1.5\cr
+Date: \tab 2015-05-12\cr
 License: \tab MIT \cr
 }
 
