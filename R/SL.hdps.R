@@ -37,7 +37,7 @@ SL.hdps.generator <- function(out_name, dimension_names, predef_covar_names=c(),
     
     predef_covars <- X[, predef_covar_names]
     if (keep_k_total > 0) {
-      hdps_covars <- predict(hdps_fit, newdata=X, keep_k_total=keep_k_total)
+      hdps_covars <- predict(hdps_fit)
       hdps_keep <- colnames(hdps_covars)[abs(cor(Y, hdps_covars)) <= 0.95]
       hdps_covars <- hdps_covars[, hdps_keep]
       df = as.data.frame(cbind(predef_covars, hdps_covars))
@@ -50,16 +50,22 @@ SL.hdps.generator <- function(out_name, dimension_names, predef_covar_names=c(),
     
     glmnet_fit <- glmnet(smm, Y, family="binomial", lambda=0)
     
-    new_predef_covars <- newX[, predef_covar_names]
-    if (keep_k_total > 0) {
-      new_hdps_covars <- predict(hdps_fit, newdata=newX, keep_k_total=keep_k_total)
-      new_hdps_covars <- new_hdps_covars[, hdps_keep]
-      new_df = as.data.frame(cbind(new_predef_covars, new_hdps_covars))
+    if (identical(X, newX)) {
+      smmnew <- smm
     } else {
-      new_df = as.data.frame(new_predef_covars)
-    }
     
-    smmnew <- sparse.model.matrix(~.-1, new_df)
+      new_predef_covars <- newX[, predef_covar_names]
+      if (keep_k_total > 0) {
+        new_hdps_covars <- predict(hdps_fit, newdata=newX)
+        new_hdps_covars <- new_hdps_covars[, hdps_keep]
+        new_df = as.data.frame(cbind(new_predef_covars, new_hdps_covars))
+      } else {
+        p
+        new_df = as.data.frame(new_predef_covars)
+      }
+      
+      smmnew <- sparse.model.matrix(~.-1, new_df)
+    }
     
     pred <- predict(glmnet_fit, smmnew, type="response")
     
