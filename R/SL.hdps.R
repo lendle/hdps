@@ -60,7 +60,6 @@ SL.hdps.generator <- function(out_name, dimension_names, predef_covar_names=c(),
         new_hdps_covars <- new_hdps_covars[, hdps_keep]
         new_df = as.data.frame(cbind(new_predef_covars, new_hdps_covars))
       } else {
-        p
         new_df = as.data.frame(new_predef_covars)
       }
       
@@ -81,6 +80,15 @@ SL.hdps.generator <- function(out_name, dimension_names, predef_covar_names=c(),
   }
 }
 
+#' Get predictions from SL_hdps wrapper
+#'
+#' @title Get predictions from SL_hdps wrapper
+#' @param object object of class \code{SL_hdps}
+#' @param newdata a matrix of covariates to predict from
+#' @param ... ignored
+#' @return vector of predictions
+#' @author Sam Lendle
+#' @export
 predict.SL_hdps <- function(object, newdata, ...){
   new_predef_covars <- newdata[, object$predef_covar_names]
   new_hdps_covars <- predict(object$hdps_fit, newdata=newdata, keep_k_total=object$keep_k_total)
