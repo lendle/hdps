@@ -5,7 +5,8 @@
 \title{SL.hdps.generator}
 \usage{
 SL.hdps.generator(out_name, dimension_names, predef_covar_names = c(),
-  keep_k_total, ...)
+  keep_k_total, ..., cvglmnet = FALSE, glmnet_args = if (cvglmnet) list()
+  else list(lambda = 0))
 }
 \arguments{
 \item{out_name}{Name of the outcome variable.}
@@ -19,6 +20,12 @@ logistic regression model.}
 \item{keep_k_total}{See \code{\link{hdps_screen}}.}
 
 \item{...}{Other arguments passed to \code{\link{hdps_screen}}.}
+
+\item{cvglmnet}{Use \code{glmnet} or \code{cv.glmnet} for fitting. Defaults to FALSE.}
+
+\item{glmnet_args}{list of arguments to be passed to glmnet or cv.glmnet. If \code{cvglmnet=FALSE}, \code{glmnet_args}
+should be set such that calling \code{predict} on the \code{glmnet} object returns only one vector of predictions.
+E.g. only one value of \code{lambda} should be set.}
 }
 \value{
 A SuperLearner wrapper function

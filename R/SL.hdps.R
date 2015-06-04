@@ -27,6 +27,7 @@
 ##' @author Sam Lendle
 ##' @importFrom Matrix sparse.model.matrix 
 ##' @importFrom glmnet glmnet
+##' @importFrom glmnet cv.glmnet
 ##' @export
 SL.hdps.generator <- function(out_name, dimension_names, predef_covar_names=c(), keep_k_total, ..., 
                               cvglmnet=FALSE, glmnet_args=if (cvglmnet) list() else list(lambda=0)) {

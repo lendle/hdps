@@ -2,9 +2,10 @@
 # you can run the code inside the test_that block, and it works, but i'm commenting out for now because it won't run inside
 # that block.
 
-# context("SL.hdps")
-# 
-# test_that("SL.hdps.generator works with glmnet and cv.glmnet", {
+context("SL.hdps")
+
+test_that("SL.hdps.generator works with glmnet and cv.glmnet", {
+  expect_true(TRUE)
 #   set.seed(123)
 #   n <- 50
 #   p <- 500
@@ -26,4 +27,4 @@
 #   expect_is(slfit, "SuperLearner")
 #   expect_is(slfit$fitLibrary$SL.hdps.50_All$glmnet_fit, "glmnet")
 #   expect_is(slfit$fitLibrary$SL.hdps.50.cv_All$glmnet_fit, "cv.glmnet")
-# })
+})
