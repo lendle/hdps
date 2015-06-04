@@ -19,12 +19,17 @@
 ##'   logistic regression model.
 ##' @param keep_k_total See \code{\link{hdps_screen}}.
 ##' @param ... Other arguments passed to \code{\link{hdps_screen}}.
+##' @param cvglmnet Use \code{glmnet} or \code{cv.glmnet} for fitting. Defaults to FALSE.
+##' @param glmnet_args list of arguments to be passed to glmnet or cv.glmnet. If \code{cvglmnet=FALSE}, \code{glmnet_args}
+##' should be set such that calling \code{predict} on the \code{glmnet} object returns only one vector of predictions. 
+##' E.g. only one value of \code{lambda} should be set.
 ##' @return A SuperLearner wrapper function
 ##' @author Sam Lendle
 ##' @importFrom Matrix sparse.model.matrix 
 ##' @importFrom glmnet glmnet
 ##' @export
-SL.hdps.generator <- function(out_name, dimension_names, predef_covar_names=c(), keep_k_total, ...) {
+SL.hdps.generator <- function(out_name, dimension_names, predef_covar_names=c(), keep_k_total, ..., 
+                              cvglmnet=FALSE, glmnet_args=if (cvglmnet) list() else list(lambda=0)) {
   function(Y, X, newX, family, obsWeights, id) {
     if (missing(newX)) {
       newX <- X
@@ -48,7 +53,10 @@ SL.hdps.generator <- function(out_name, dimension_names, predef_covar_names=c(),
     
     smm <- sparse.model.matrix(~.-1, df)
     
-    glmnet_fit <- glmnet(smm, Y, family="binomial", lambda=0)
+    myglmnet <- function(...) if (cvglmnet) 
+      cv.glmnet(smm, Y, family="binomial") else 
+      glmnet(smm, Y, family="binomial", ...)
+    glmnet_fit <- do.call(myglmnet, glmnet_args)
     
     if (identical(X, newX)) {
       smmnew <- smm
@@ -67,6 +75,7 @@ SL.hdps.generator <- function(out_name, dimension_names, predef_covar_names=c(),
     }
     
     pred <- predict(glmnet_fit, smmnew, type="response")
+    if (ncol(pred) != 1) stop("Check cvglmnet and glmnet_args arguments to insure that predict returns only one column")
     
     
     # fit returns all objects needed for predict.SL.template
@@ -96,6 +105,7 @@ predict.SL_hdps <- function(object, newdata, ...){
   new_df <- cbind(new_predef_covars, new_hdps_covars)
   smmnew <- sparse.model.matrix(~.-1, new_df)
   pred <- predict(object$glmnet_fit, smmnew, type = "response")
+  if (ncol(pred) != 1) stop("Check cvglmnet and glmnet_args arguments to insure that predict returns only one column")
   pred
 }
 
