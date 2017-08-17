@@ -8,8 +8,8 @@
 #' \tabular{ll}{
 #' Package: \tab hdps\cr
 #' Type: \tab Package\cr
-#' Version: \tab 0.1.5\cr
-#' Date: \tab 2015-05-12\cr
+#' Version: \tab 0.1.6\cr
+#' Date: \tab 2017-08-16\cr
 #' License: \tab MIT \cr 
 #' } 
 #' 

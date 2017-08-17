@@ -3,11 +3,8 @@ context("calc_rr_cds")
 
 test_that("calc_rr_cds c++ function works the same way as the all R version", {
   calc_rr_cd <- function(outcome, covar) {
-    #returns rr_cd if rr_cd > 1, else returns 1/rr_cd
-    #might return Inf if there are 0 outcomes at a particular level of the covar
     prevs <- by(outcome, covar, mean)
-    rr_cd <- (prevs[1])/(prevs[2])
-    max(rr_cd, 1/rr_cd)
+    (prevs[2])/(prevs[1])
   }
   
   set.seed(123)
@@ -24,5 +21,5 @@ test_that("calc_rr_cds c++ function works the same way as the all R version", {
   rr_cds <-  calc_rr_cds(out, covars)
   
   expect_equal(rr_cds, apply(covars, 2, calc_rr_cd, outcome=out))
-  expect_equal(rr_cds[1], Inf, check.names=FALSE)
+  expect_equal(rr_cds[1], 0, check.names=FALSE)
 })

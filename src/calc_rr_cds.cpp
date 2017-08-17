@@ -38,7 +38,7 @@ NumericVector calc_rr_cds(NumericVector outcome, NumericMatrix covars) {
     double prev0 = outcomes0/n0;
     
     double rr = prev1/prev0;
-    out(j) = rr > 1? rr : 1/rr;
+    out(j) = rr;
   }
   return out;
 }

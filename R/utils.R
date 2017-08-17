@@ -1,3 +1,4 @@
+#' @importFrom stats quantile
 get_quantiles <- function(x) {
   xx0 <- x[x>0]
   quants <- quantile(xx0, probs=c(0.5, 0.75), names=FALSE, type=2)

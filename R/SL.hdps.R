@@ -28,6 +28,7 @@
 ##' @importFrom Matrix sparse.model.matrix 
 ##' @importFrom glmnet glmnet
 ##' @importFrom glmnet cv.glmnet
+##' @importFrom stats cor
 ##' @export
 SL.hdps.generator <- function(out_name, dimension_names, predef_covar_names=c(), keep_k_total, ..., 
                               cvglmnet=FALSE, glmnet_args=if (cvglmnet) list() else list(lambda=0)) {
@@ -98,6 +99,7 @@ SL.hdps.generator <- function(out_name, dimension_names, predef_covar_names=c(),
 #' @param ... ignored
 #' @return vector of predictions
 #' @author Sam Lendle
+#' @importFrom stats predict
 #' @export
 predict.SL_hdps <- function(object, newdata, ...){
   new_predef_covars <- newdata[, object$predef_covar_names]
@@ -114,6 +116,8 @@ predict.SL_hdps <- function(object, newdata, ...){
 ##' @rdname screen
 ##' 
 ##' @title SuperLearner screening wrappers
+##' 
+##' @description Functions to set up screening wrappers for SuperLearner
 ##'   
 ##' @param names Names to be included or excluded
 ##' 
